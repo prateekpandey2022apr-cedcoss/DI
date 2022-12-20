@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import { useContext, useEffect, useState } from "react";
+import { DI } from "./Core/DependencyInjection";
+import List from "./List";
+// import { StoreDispatcher } from "./index.js";
+import { useDispatch } from "react-redux";
+import { ThunkDispatch } from "redux-thunk";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function App(props) {
+  // debugger;
+  const [loading, setIsLoading] = useState(false);
+  const [todos, setTodos] = useState([]);
+  const dispatch = useDispatch();
+
+  // const dispatcher = useContext(StoreDispatcher);
+
+  function asyncAction({ title, userId }) {
+    return (dispatch) => {
+      props.di
+        .GET(`https://jsonplaceholder.typicode.com/users`)
+        .then((res) => {
+          console.log(res);
+          dispatch({ type: "success", data: "@@@@@@@@@@@" });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+  }
+
+  useEffect(() => {
+    setIsLoading(true);
+    const result = props.di.GET("https://jsonplaceholder.typicode.com/todos");
+    result.then((res) => {
+      console.log(res);
+      setTodos(res);
+      setIsLoading(false);
+      // debugger;
+      dispatch({
+        type: "todo",
+        data: res,
+      });
+      dispatch(asyncAction({ title: "", userId: "" }));
+    });
+  }, []);
+
+  return <List loading={loading} todos={todos} />;
 }
 
-export default App;
+export default DI(App);
