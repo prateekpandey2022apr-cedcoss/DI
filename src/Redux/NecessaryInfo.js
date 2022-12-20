@@ -3,7 +3,6 @@ const initialState = {
 };
 
 export const necessaryInfo = (state = initialState, action) => {
-  // debugger;
   switch (action.type) {
     case "user":
       return {

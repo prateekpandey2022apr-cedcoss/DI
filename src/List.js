@@ -3,7 +3,6 @@ import { DI } from "./Core/DependencyInjection";
 import withLoading from "./withLoading";
 
 const List = (props) => {
-  // debugger;
   const { todos, item } = props;
   return (
     <div>

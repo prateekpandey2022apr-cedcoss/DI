@@ -11,8 +11,6 @@ function DependencyInjection(Component) {
   };
 
   const mapStateToProps = (state) => {
-    // debugger;
-    console.log(state);
     return {
       necessaryInfo: state.necessaryInfo,
     };
